@@ -1,4 +1,4 @@
-# check python version
+# Check python version
 python --version
 
 # Create virtul env
@@ -15,10 +15,10 @@ pip install requests
 manage.py -> basedir
 settings.py -> projdir
 
-# create a new django-project
+# Create a new django-project
 django-admin startproject blog_project
 
-# create new app
+# Create new app
 python manage.py startapp
 
 # Run Project
