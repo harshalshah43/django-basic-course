@@ -33,10 +33,32 @@ python manage.py runserver
 # Explanation
 - Http request gets routed first from the project-urls.py from there it gets further mapped to blog urls depending on what is the url pattern
 
+---
 
+### 📌 Absolute vs Relative URLs in HTML
 
+* **Absolute path (`/blog/home`)**
+  Starts from the root of the website.
+  Example:
+  `/blog/home` → `http://127.0.0.1:8000/blog/home`
+  ✅ Always reliable
 
+* **Relative path (`blog/home`)**
+  Appends to the current URL path.
+  Example:
+  Current page: `/user/login/`
+  `blog/home` → `/user/login/blog/home`
+  ❌ Can break depending on current location
 
+* Browsers treat URLs like **file paths** and always keep a `/` between the domain and path, so invalid URLs like `http://127.0.0.1:8000blog/home` never occur.
+
+* ✅ **Best practice in Django:**
+  Use template tags:
+
+  ```html
+  {% url 'route_name' %}
+  ```
+---
 
 
 

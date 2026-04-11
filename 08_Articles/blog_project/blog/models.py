@@ -11,11 +11,12 @@ class Article(models.Model):
 
     image = models.ImageField(upload_to='article_pics/',blank=True,null=True)
 
-    category_choices = (('technology','Technology'),
+    category_choices = (('','Select Category'),
+                        ('technology','Technology'),
                         ('lifestyle','Lifestyle'),
                         ('coding','Coding'))
 
-    category = models.CharField(max_length=25, choices=category_choices)
+    category = models.CharField(max_length=25, choices=category_choices,blank = False)
 
     def __str__(self):
         return f"{self.title}"

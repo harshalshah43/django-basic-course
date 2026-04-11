@@ -1,6 +1,7 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse,redirect,get_object_or_404
 from .models import Article
 from .forms import ArticleCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -46,14 +47,60 @@ def about(request):
     return render(request,'blog/about.html',context)
     # return HttpResponse("<h1>This About Us Page</h1>")
 
+def article_list(request):
+    articles = Article.objects.filter(
+        author = request.user
+        ).order_by('-created_at')
+    return render(request, 'blog/article_list.html', {'articles': articles})
 
-
+@login_required
 def create_article(request):
-    form = ArticleCreationForm()
+    if request.method == "POST":
+        form = ArticleCreationForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.author = request.user
+            form.save()
+            return redirect('blog-home')
+    else:            
+        form = ArticleCreationForm()
+
     context = {'form':form}
     return render(request,'blog/article_form.html',context)
 
+@login_required
+def update_article(request,id):
+    article = Article.objects.get(id = id)
+    if request.method == "POST":
+        form = ArticleCreationForm(request.POST,request.FILES,instance=article)
+        if form.is_valid():
+            form.author = request.user
+            form.save()
+            return redirect('blog-home')
+    else:            
+        form = ArticleCreationForm(instance=article)
+    context = {'form':form}
+    return render(request,'blog/article_form.html',context)
 
+@login_required
+def delete_article(request,id):
+    article = get_object_or_404(Article,id = id)
+    # check if the user is the owner
+    if article.author != request.user:
+        return redirect('article_list')
+    
+    if request.method == "POST":
+        article.delete()
+        return redirect('article_list')
+    
+    context = {'article':article}
+    return render(request,'blog/article_delete.html',context)
+    
+
+@login_required
+def article_detail(request,id):
+    article = get_object_or_404(Article,id = id)
+    context = {'article':article}
+    return render(request,'blog/article_detail.html',context)
 
 # forms.py 
 # views.py
