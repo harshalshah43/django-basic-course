@@ -31,12 +31,12 @@
             {% csrf_token %}
 
             <!-- Username -->
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <label class="block text-sm font-medium mb-1">
                     Username
                 </label>
                 {{ u_form.username }}
-            </div>
+            </div> -->
 
             <!-- Email -->
             <div class="mb-4">
@@ -44,6 +44,22 @@
                     Email
                 </label>
                 {{ u_form.email }}
+            </div>
+
+            <!-- First name -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">
+                    First Name
+                </label>
+                {{ u_form.first_name }}
+            </div>
+
+            <!-- Last Name -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">
+                    Last Name
+                </label>
+                {{ u_form.last_name }}
             </div>
 
             <!-- Profile Image -->
