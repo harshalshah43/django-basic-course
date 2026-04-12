@@ -58,9 +58,9 @@ def create_article(request):
     if request.method == "POST":
         form = ArticleCreationForm(request.POST,request.FILES)
         if form.is_valid():
-            form.author = request.user
+            form.instance.author = request.user
             form.save()
-            return redirect('blog-home')
+            return redirect('article_list')
     else:            
         form = ArticleCreationForm()
 
@@ -73,9 +73,9 @@ def update_article(request,id):
     if request.method == "POST":
         form = ArticleCreationForm(request.POST,request.FILES,instance=article)
         if form.is_valid():
-            form.author = request.user
+            form.instance.author = request.user
             form.save()
-            return redirect('blog-home')
+            return redirect('article_list')
     else:            
         form = ArticleCreationForm(instance=article)
     context = {'form':form}
