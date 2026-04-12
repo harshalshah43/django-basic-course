@@ -1,6 +1,7 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse,redirect
 from .models import Article
 from .forms import ArticleCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -46,10 +47,24 @@ def about(request):
     return render(request,'blog/about.html',context)
     # return HttpResponse("<h1>This About Us Page</h1>")
 
+def article_view(request):
+    articles = Article.objects.filter(
+        author = request.user
+        ).order_by('-created_at')
+    return render(request, 'blog/article_view.html', {'articles': articles})
 
-
+@login_required
 def create_article(request):
-    form = ArticleCreationForm()
+    if request.method == 'POST':
+        form = ArticleCreationForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.instance.author = request.user
+            form.save()
+            print('form saved')
+            return redirect('article-list')
+    else:
+        form = ArticleCreationForm()
+
     context = {'form':form}
     return render(request,'blog/article_form.html',context)
 
