@@ -24,7 +24,7 @@ class Article(models.Model):
     
     def save(self, *args, **kwargs):
         try:
-            old_instance = Article.objects.get(pk=self.pk)
+            old_instance = Article.objects.get(id=self.id)
 
             if old_instance.image and old_instance.image != self.image:
                 if os.path.isfile(old_instance.image.path):
