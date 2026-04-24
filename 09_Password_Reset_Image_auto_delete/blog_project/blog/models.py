@@ -25,10 +25,13 @@ class Article(models.Model):
         # Check if old image is present and is not the same as new image, if not then delete it
         ## Get the object of current Article old image
         ## Check if Article contains an image and if old image is same as new image
-        current_article = Article.objects.get(id = self.id)
-        if current_article.image and current_article.image != self.image:
-            if os.path.isfile(current_article.image.path):
-                os.remove(current_article.image.path)
+        try:
+            current_article = Article.objects.get(id = self.id)
+            if current_article.image and current_article.image != self.image:
+                if os.path.isfile(current_article.image.path):
+                    os.remove(current_article.image.path)
+        except Article.DoesNotExist:
+            pass
 
         # Do the normal saving using the default save method
         super().save(*args, **kwargs)

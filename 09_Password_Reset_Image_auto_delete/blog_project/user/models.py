@@ -12,11 +12,14 @@ class Profile(models.Model):
         return f"{self.user.username} Profile"
 
     def save(self, *args, **kwargs):
-        current_profile = Profile.objects.get(id = self.id)
+        try:
+            current_profile = Profile.objects.get(id = self.id)
 
-        if current_profile.image and current_profile.image != self.image:
-            if os.path.isfile(current_profile.image.path):
-                os.remove(current_profile.image.path)
+            if current_profile.image and current_profile.image != self.image:
+                if os.path.isfile(current_profile.image.path):
+                    os.remove(current_profile.image.path)
+        except Profile.DoesNotExist:
+            pass
 
         # Do the normal saving using the default save method
         super().save(*args, **kwargs)
